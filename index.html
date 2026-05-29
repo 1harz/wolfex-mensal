@@ -1,6 +1,388 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <meta http-equiv="refresh" content="0; url=pitch-wolfex-maio-2026.html">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wolfex — Relatórios Mensais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+  --bg: #060e1f;
+  --blue: #0A2463;
+  --blue-light: #143a8f;
+  --blue-dark: #061640;
+  --orange: #FF6835;
+  --orange-light: #ff8a5c;
+  --orange-dark: #d4500e;
+  --success: #3BCEAC;
+  --success-light: #5ee8c8;
+  --success-dark: #0d9b7a;
+  --danger: #ef4444;
+  --text: #e4e7ec;
+  --text-muted: #5a6577;
+  --text-secondary: #8b95a5;
+  --card-bg: rgba(15, 24, 41, 0.7);
+  --card-backdrop: blur(12px);
+  --card-bg-hover: #131d30;
+  --border: rgba(26, 37, 64, 0.6);
+  --border-light: #152035;
+  --ring-blue: rgba(107, 143, 212, 0.2);
+  --ring-orange: rgba(255, 104, 53, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  }
+
+  body:not(.authenticated) .main-content {
+  display: none !important;
+  }
+  body:not(.authenticated) #auth-overlay {
+  display: flex !important;
+  }
+  body.authenticated #auth-overlay {
+  display: none !important;
+  }
+
+  #auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 99999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  }
+  .auth-box {
+  background: var(--card-bg);
+  backdrop-filter: var(--card-backdrop);
+  -webkit-backdrop-filter: var(--card-backdrop);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  animation: fadeUp 0.6s ease;
+  }
+  .auth-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+  margin-bottom: 24px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  }
+  .auth-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px var(--ring-orange);
+  }
+  .auth-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--orange);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .auth-btn:hover {
+  background: var(--orange-light);
+  transform: translateY(-1px);
+  }
+  .auth-btn:active {
+  transform: translateY(0);
+  }
+
+  @keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+  }
+
+  .main-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 60px;
+  animation: fadeUp 0.6s ease;
+  }
+
+  h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; text-align: center; }
+  h3 { font-size: 1.35rem; font-weight: 600; line-height: 1.4; }
+  p { font-size: 1.15rem; line-height: 1.7; color: var(--text-secondary); font-family: 'Inter', system-ui, sans-serif; }
+  .label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--orange); }
+
+  .logo-wolfex { width: 250px; height: auto; }
+
+  .accent-line {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--orange) 100%);
+  border-radius: 2px;
+  }
+
+  .text-center { text-align: center; }
+  .mx-auto { margin-left: auto; margin-right: auto; }
+
+  .months-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1060px;
+  margin-top: 40px;
+  }
+
+  .month-card {
+  background: var(--card-bg);
+  backdrop-filter: var(--card-backdrop);
+  -webkit-backdrop-filter: var(--card-backdrop);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  }
+  .month-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--orange);
+  box-shadow: 0 12px 40px rgba(255, 104, 53, 0.2);
+  }
+  .month-card.current {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 1px var(--orange), 0 12px 40px rgba(255, 104, 53, 0.2);
+  background: rgba(255, 104, 53, 0.04);
+  }
+  .month-card.current::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange) 0%, var(--orange-light) 100%);
+  }
+
+  .month-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  }
+  .month-year {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  }
+  .month-card.current .month-name {
+  background: linear-gradient(135deg, var(--orange-light) 0%, var(--orange) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  }
+  .current-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(255, 104, 53, 0.12);
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  }
+
+  .month-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  }
+  .month-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--orange);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  }
+  .month-card.current .month-icon {
+  background: rgba(255, 104, 53, 0.12);
+  }
+  .month-card:not(.current) .month-icon {
+  background: rgba(107, 143, 212, 0.08);
+  }
+  .month-card:not(.current) .month-icon svg {
+  stroke: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  .main-content { padding: 30px 20px; }
+  .months-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  }
+</style>
 </head>
+<body>
+
+  <div id="auth-overlay">
+    <div class="auth-box">
+      <svg class="logo-wolfex" viewBox="0 0 681 258" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 185px; margin-bottom: 28px; display: block; margin-left: auto; margin-right: auto;">
+        <g>
+        <path fill="#fff" d="M159.2,85.51c2.72.81-.49,8.57-1.14,10.91-6.54,23.33-15.37,49.13-23.39,72.11-.84,2.4-5.02,14.62-5.97,15.35-.81.78-1.8.75-2.82.88-4.51.61-18.71.57-23.27,0-1.02-.13-2.06.06-2.74-.96l-18.52-60.28-18.51,61.25c-7.97-.82-17.35.88-25.12,0-1.33-.15-2.44-.09-3.11-1.52L3.38,87.36c1.6-2.6,17.84-2.22,21.42-1.89,2.12.19,3.95.17,5.49,1.93l19.49,63.95,18.52-64.01c2.12-2.11,23.08-2.61,25.9-.81l20.94,65.74,17.88-65.58c.87-.13,2.46-1.18,2.99-1.18,4.77,0,19.95-.96,23.18,0Z"/>
+        <path fill="#fff" d="M201.39,161.07c.04-.36,1.31-1.21.92-2.31-4.42-.89-16.84,17.51-19.46,14.83-.46-14.71,4.61-30.89,15.75-40.79l-6.48,22.25c7.65-3.06,14.66-8.74,23.17-9.26-6.13,10.83-7.81,30.2.92,39.86.29-8.74,3.27-16.61,7.44-24.1l1.84.46c.6,2.24-1.89,6.77.91,7.87.77-10.82,9.88-19.79,19.5-23.62,2.57-1.02,6.56-1.03,8.69-2.43,2.49-1.64,4.25-5.91,1.98-8.28-3.88-4.03-4.37-.08-4.82.03-2.24.57-11.51-1.41-11.47-4.15.52-2.7,11.39-16.34,13.94-13.48v2.79c3.27-1.74,1.6-7.57,1.71-10.98l-8.78-4.56c-3.2-.36-10.26,5.08-13.84,5.31s-8.31-3.64-11.74-3.5c-5.55,2.98-45.26,13.51-46.68,15.52-3.19,4.52,11.72,8.57,14.44,9.83,1.39.64,2.29-.13,1.84,2.28-3.83.71-8.56-2.2-12.06-.46-.93.46-10.69,12.3-12.59,14.29-.74.78-1.29,2.23-2.68,1.94-6.13-14.78.1-34.76,9.74-46.8,34.29-42.81,106.35-12.74,97.1,43.32-4.64,28.11-33.59,49.62-62.17,44.05-3.62-.71-7.13-11.94-7.13-15.07,0-4.58-.51-10.49,0-14.83Z"/>
+        <path fill="#fff" d="M443.38,86.43c1.01,6.69,1.35,13.45-.87,20l-47.35,1.33v19.47l43.58.93v20.4l-43.58.92-.92,35.24h-25.03l-.93-98.28h75.1Z"/>
+        <path fill="#fff" d="M311.72,162.46h41.26c.48,0,2.1,1.13,3.1,1.07.96,6.96,2,14.93-1.25,21.18h-69.07l-.93-98.29c8.97.69,18.74-2.66,26.89,1.4v74.64Z"/>
+        <path fill="#fff" d="M195.82,121.67c.6,2.17-.56,1.56-1.18,2.12-5.5,4.86-7.7,6.5-13.64.19l14.82-2.31Z"/>
+        <path fill="#fff" d="M229.21,115.17l-12.05.93c.64-5.05,9.95-4.97,12.05-.93Z"/>
+        </g>
+        <g>
+        <path fill="#FF6835" d="M490.08 105.5 L490.06 125.48 L530.02 125.48 L530.01 144.21 L490.06 144.21 L490.06 165.44 L515.53 165.44 L538.76 165.44 L538.75 185.41 L463.87 185.41 L463.87 85.53 L536.27 85.51 L536.25 105.5 L490.08 105.5Z"/>
+        </g>
+        <g>
+        <path fill="#FF6835" d="M586.03 127.62 L532.58 208.76 L620.77 132.51 L583.55 85.43 L551.33 85.43 L586.03 127.62Z"/>
+        <path fill="#FF6835" d="M612.88 105.2 L629.34 124.04 L675.13 59.41 L612.88 105.2Z"/>
+        <path fill="#FF6835" d="M609.24 158.48 L627.55 184.6 L660.2 184.6 L627.81 142.34 L609.24 158.48Z"/>
+        </g>
+      </svg>
+      <h3 style="color: var(--text); margin-bottom: 8px;">Acesso Restrito</h3>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px;">Esta apresentação contém informações confidenciais.</p>
+      <input type="password" id="password-input" class="auth-input" placeholder="Digite a senha..." autofocus />
+      <button id="auth-button" class="auth-btn">Entrar</button>
+      <p id="error-message" style="color: var(--danger); font-size: 0.85rem; margin-top: 12px; display: none; font-family: 'Inter', sans-serif;">Senha incorreta. Tente novamente.</p>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <svg class="logo-wolfex" viewBox="0 0 681 258" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 200px; margin-bottom: 20px;">
+      <g>
+      <path fill="#fff" d="M159.2,85.51c2.72.81-.49,8.57-1.14,10.91-6.54,23.33-15.37,49.13-23.39,72.11-.84,2.4-5.02,14.62-5.97,15.35-.81.78-1.8.75-2.82.88-4.51.61-18.71.57-23.27,0-1.02-.13-2.06.06-2.74-.96l-18.52-60.28-18.51,61.25c-7.97-.82-17.35.88-25.12,0-1.33-.15-2.44-.09-3.11-1.52L3.38,87.36c1.6-2.6,17.84-2.22,21.42-1.89,2.12.19,3.95.17,5.49,1.93l19.49,63.95,18.52-64.01c2.12-2.11,23.08-2.61,25.9-.81l20.94,65.74,17.88-65.58c.87-.13,2.46-1.18,2.99-1.18,4.77,0,19.95-.96,23.18,0Z"/>
+      <path fill="#fff" d="M201.39,161.07c.04-.36,1.31-1.21.92-2.31-4.42-.89-16.84,17.51-19.46,14.83-.46-14.71,4.61-30.89,15.75-40.79l-6.48,22.25c7.65-3.06,14.66-8.74,23.17-9.26-6.13,10.83-7.81,30.2.92,39.86.29-8.74,3.27-16.61,7.44-24.1l1.84.46c.6,2.24-1.89,6.77.91,7.87.77-10.82,9.88-19.79,19.5-23.62,2.57-1.02,6.56-1.03,8.69-2.43,2.49-1.64,4.25-5.91,1.98-8.28-3.88-4.03-4.37-.08-4.82.03-2.24.57-11.51-1.41-11.47-4.15.52-2.7,11.39-16.34,13.94-13.48v2.79c3.27-1.74,1.6-7.57,1.71-10.98l-8.78-4.56c-3.2-.36-10.26,5.08-13.84,5.31s-8.31-3.64-11.74-3.5c-5.55,2.98-45.26,13.51-46.68,15.52-3.19,4.52,11.72,8.57,14.44,9.83,1.39.64,2.29-.13,1.84,2.28-3.83.71-8.56-2.2-12.06-.46-.93.46-10.69,12.3-12.59,14.29-.74.78-1.29,2.23-2.68,1.94-6.13-14.78.1-34.76,9.74-46.8,34.29-42.81,106.35-12.74,97.1,43.32-4.64,28.11-33.59,49.62-62.17,44.05-3.62-.71-7.13-11.94-7.13-15.07,0-4.58-.51-10.49,0-14.83Z"/>
+      <path fill="#fff" d="M443.38,86.43c1.01,6.69,1.35,13.45-.87,20l-47.35,1.33v19.47l43.58.93v20.4l-43.58.92-.92,35.24h-25.03l-.93-98.28h75.1Z"/>
+      <path fill="#fff" d="M311.72,162.46h41.26c.48,0,2.1,1.13,3.1,1.07.96,6.96,2,14.93-1.25,21.18h-69.07l-.93-98.29c8.97.69,18.74-2.66,26.89,1.4v74.64Z"/>
+      <path fill="#fff" d="M195.82,121.67c.6,2.17-.56,1.56-1.18,2.12-5.5,4.86-7.7,6.5-13.64.19l14.82-2.31Z"/>
+      <path fill="#fff" d="M229.21,115.17l-12.05.93c.64-5.05,9.95-4.97,12.05-.93Z"/>
+      </g>
+      <g>
+      <path fill="#FF6835" d="M490.08 105.5 L490.06 125.48 L530.02 125.48 L530.01 144.21 L490.06 144.21 L490.06 165.44 L515.53 165.44 L538.76 165.44 L538.75 185.41 L463.87 185.41 L463.87 85.53 L536.27 85.51 L536.25 105.5 L490.08 105.5Z"/>
+      </g>
+      <g>
+      <path fill="#FF6835" d="M586.03 127.62 L532.58 208.76 L620.77 132.51 L583.55 85.43 L551.33 85.43 L586.03 127.62Z"/>
+      <path fill="#FF6835" d="M612.88 105.2 L629.34 124.04 L675.13 59.41 L612.88 105.2Z"/>
+      <path fill="#FF6835" d="M609.24 158.48 L627.55 184.6 L660.2 184.6 L627.81 142.34 L609.24 158.48Z"/>
+      </g>
+    </svg>
+    <div>
+      <p class="label text-center">Relatórios Mensais</p>
+    </div>
+    <div style="margin-top: 12px;">
+      <h1>Selecione o Mês</h1>
+    </div>
+    <div style="margin-top: 16px; max-width: 600px;">
+      <p class="text-center">Escolha o relatório de progresso que deseja visualizar.</p>
+    </div>
+    <div style="margin-top: 24px;">
+      <div class="accent-line mx-auto"></div>
+    </div>
+    <div class="months-grid" id="months-grid"></div>
+    <div style="margin-top: 40px;">
+      <p style="font-size: 0.85rem; color: var(--text-muted);">Wolfex | wolfex.com.br | Confidencial</p>
+    </div>
+  </div>
+
+<script>
+(function() {
+  var overlay = document.getElementById('auth-overlay');
+  var input = document.getElementById('password-input');
+  var button = document.getElementById('auth-button');
+  var errorMsg = document.getElementById('error-message');
+  var correctPassword = 'docwolfex';
+
+  if (sessionStorage.getItem('wolfex_authenticated') === 'true') {
+    document.body.classList.add('authenticated');
+  }
+
+  function checkPassword() {
+    if (input && input.value === correctPassword) {
+      sessionStorage.setItem('wolfex_authenticated', 'true');
+      document.body.classList.add('authenticated');
+    } else if (errorMsg && input) {
+      errorMsg.style.display = 'block';
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  if (button && input) {
+    button.addEventListener('click', checkPassword);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+  }
+
+  var months = [
+    { name: 'Abril', year: '2026', file: 'pitch-wolfex-abril-2026.html', key: 'abril-2026' },
+    { name: 'Maio', year: '2026', file: 'pitch-wolfex-maio-2026.html', key: 'maio-2026' }
+  ];
+
+  var now = new Date();
+  var currentMonthKey = ['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][now.getMonth()] + '-' + now.getFullYear();
+
+  var grid = document.getElementById('months-grid');
+  months.reverse().forEach(function(m) {
+    var isCurrent = m.key === currentMonthKey;
+    var a = document.createElement('a');
+    a.href = m.file;
+    a.className = 'month-card' + (isCurrent ? ' current' : '');
+    a.innerHTML =
+      '<div class="month-icon">' +
+        '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>' +
+      '</div>' +
+      '<div class="month-name">' + m.name + '</div>' +
+      '<div class="month-year">' + m.year + '</div>' +
+      (isCurrent ? '<div class="current-badge">Mês Atual</div>' : '');
+    grid.appendChild(a);
+  });
+})();
+</script>
+
+</body>
 </html>

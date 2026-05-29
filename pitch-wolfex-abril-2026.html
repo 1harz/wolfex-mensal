@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wolfex — Apresentação ao Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+ :root {
+ --bg: #060e1f;
+ --blue: #0A2463;
+ --blue-light: #143a8f;
+ --blue-dark: #061640;
+ --orange: #FF6835;
+ --orange-light: #ff8a5c;
+ --orange-dark: #d4500e;
+ --success: #3BCEAC;
+ --success-light: #5ee8c8;
+ --success-dark: #0d9b7a;
+ --danger: #ef4444;
+ --text: #e4e7ec;
+ --text-muted: #5a6577;
+ --text-secondary: #8b95a5;
+ --card-bg: rgba(15, 24, 41, 0.7);
+ --card-backdrop: blur(12px);
+ --card-bg-hover: #131d30;
+ --border: rgba(26, 37, 64, 0.6);
+ --border-light: #152035;
+ --ring-blue: rgba(107, 143, 212, 0.2);
+ --ring-orange: rgba(255, 104, 53, 0.25);
+ }
+
+ * { margin: 0; padding: 0; box-sizing: border-box; }
+
+ html, body {
+ height: 100%;
+ font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+ background: var(--bg);
+ color: var(--text);
+ overflow: hidden;
+ -webkit-font-smoothing: antialiased;
+ }
+
+ .deck {
+ position: relative;
+ width: 100vw;
+ height: 100vh;
+ }
+
+ .slide {
+ position: absolute;
+ inset: 0;
+ opacity: 0;
+ visibility: hidden;
+ transition: opacity 0.6s ease;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ padding: 40px 60px;
+ overflow: hidden;
+ }
+
+ .slide.active {
+ opacity: 1;
+ visibility: visible;
+ z-index: 10;
+ }
+
+ @keyframes fadeUp {
+ from { opacity: 0; transform: translateY(24px); }
+ to { opacity: 1; transform: translateY(0); }
+ }
+
+ .stagger-1 { animation: fadeUp 0.6s ease 0.1s both; }
+ .stagger-2 { animation: fadeUp 0.6s ease 0.2s both; }
+ .stagger-3 { animation: fadeUp 0.6s ease 0.3s both; }
+ .stagger-4 { animation: fadeUp 0.6s ease 0.4s both; }
+ .stagger-5 { animation: fadeUp 0.6s ease 0.5s both; }
+ .stagger-6 { animation: fadeUp 0.6s ease 0.6s both; }
+
+ h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+ h2 {
+ font-size: 2.3rem;
+ font-weight: 700;
+ letter-spacing: -0.01em;
+ color: var(--text);
+ line-height: 1.25;
+ text-wrap: balance;
+ }
+ h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.4; }
+ p { font-size: 1.05rem; line-height: 1.65; color: var(--text-secondary); font-family: 'Inter', system-ui, sans-serif; }
+ .label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); }
+
+ .logo-wolfex { width: 220px; height: auto; }
+
+ .flex { display: flex; }
+ .flex-col { flex-direction: column; }
+ .items-center { align-items: center; }
+ .justify-center { justify-content: center; }
+ .gap-2 { gap: 8px; }
+ .gap-3 { gap: 12px; }
+ .gap-4 { gap: 16px; }
+ .gap-6 { gap: 24px; }
+ .gap-8 { gap: 32px; }
+ .mt-2 { margin-top: 8px; }
+ .mt-4 { margin-top: 16px; }
+ .mt-6 { margin-top: 16px; }
+ .mt-8 { margin-top: 24px; }
+ .mb-2 { margin-bottom: 8px; }
+ .mb-4 { margin-bottom: 16px; }
+ .w-full { width: 100%; }
+ .max-w-3xl { max-width: 800px; }
+ .max-w-4xl { max-width: 900px; }
+ .max-w-5xl { max-width: 1100px; }
+ .text-center { text-align: center; }
+ .mx-auto { margin-left: auto; margin-right: auto; }
+
+ .card {
+ background: var(--card-bg);
+ backdrop-filter: var(--card-backdrop);
+ -webkit-backdrop-filter: var(--card-backdrop);
+ border: 1px solid var(--border);
+ border-radius: 16px;
+ padding: 24px;
+ box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+ transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+ }
+ .card:hover {
+ transform: translateY(-4px);
+ border-color: var(--blue-light);
+ box-shadow: 0 12px 40px rgba(10, 36, 99, 0.2);
+ }
+ .card:hover {
+ border-color: var(--orange);
+ box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+ }
+
+ .card-icon {
+ width: 48px;
+ height: 48px;
+ border-radius: 12px;
+ background: rgba(255,104,53,0.12);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ margin-bottom: 16px;
+ }
+ .card-icon svg { width: 24px; height: 24px; stroke: var(--orange); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+ .metric-card {
+ background: var(--card-bg);
+ backdrop-filter: var(--card-backdrop);
+ -webkit-backdrop-filter: var(--card-backdrop);
+ border: 1px solid var(--border);
+ border-radius: 16px;
+ padding: 24px;
+ text-align: center;
+ box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+ transition: transform 0.3s ease, border-color 0.3s ease;
+ }
+ .metric-card:hover {
+ transform: translateY(-4px);
+ border-color: var(--success);
+ }
+ .metric-card:hover {
+ border-color: var(--orange);
+ box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+ }
+ .metric-value {
+ font-family: 'Inter', sans-serif;
+ font-size: 3.2rem;
+ font-weight: 700;
+ color: var(--success);
+ line-height: 1;
+ letter-spacing: -0.03em;
+ background: linear-gradient(135deg, var(--success-light) 0%, var(--success) 100%);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ }
+ .metric-label {
+ font-size: 0.85rem;
+ color: var(--text-muted);
+ margin-top: 8px;
+ font-weight: 500;
+ }
+
+ .grid { display: grid; }
+ .grid-2 { grid-template-columns: repeat(2, 1fr); }
+ .grid-3 { grid-template-columns: repeat(3, 1fr); }
+ .grid-4 { grid-template-columns: repeat(4, 1fr); }
+ .gap-grid { gap: 16px; }
+
+ .progress-bar {
+ width: 100%;
+ height: 8px;
+ background: var(--border);
+ border-radius: 4px;
+ overflow: hidden;
+ margin-top: 10px;
+ }
+ .progress-fill {
+ height: 100%;
+ background: linear-gradient(90deg, var(--blue) 0%, var(--orange) 100%);
+ border-radius: 4px;
+ }
+
+ .cta-btn {
+ display: inline-flex;
+ align-items: center;
+ gap: 10px;
+ background: var(--blue);
+ color: var(--text);
+ font-family: 'Plus Jakarta Sans', sans-serif;
+ font-weight: 600;
+ font-size: 1rem;
+ padding: 16px 36px;
+ border-radius: 8px;
+ text-decoration: none;
+ transition: all 0.2s ease;
+ border: none;
+ cursor: pointer;
+ }
+ .cta-btn:hover { background: var(--blue-light); box-shadow: 0 0 0 3px var(--ring-blue); }
+
+ .nav-dots {
+ position: fixed;
+ right: 32px;
+ top: 50%;
+ transform: translateY(-50%);
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+ z-index: 100;
+ }
+ .nav-dot {
+ width: 10px;
+ height: 10px;
+ border-radius: 50%;
+ background: rgba(255,255,255,0.15);
+ cursor: pointer;
+ transition: all 0.3s ease;
+ border: none;
+ }
+ .nav-dot.active { background: var(--orange); transform: scale(1.3); box-shadow: 0 0 0 3px var(--ring-orange); }
+
+ .slide-counter {
+ position: fixed;
+ bottom: 28px;
+ right: 36px;
+ font-size: 0.75rem;
+ color: var(--text-muted);
+ font-weight: 500;
+ z-index: 100;
+ font-family: 'Inter', sans-serif;
+ }
+
+ .accent-line {
+ width: 48px;
+ height: 4px;
+ background: linear-gradient(90deg, var(--blue) 0%, var(--orange) 100%);
+ border-radius: 2px;
+ }
+
+ .client-row {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 40px;
+ margin-top: 32px;
+ opacity: 0.6;
+ }
+ .client-name {
+ font-size: 1rem;
+ font-weight: 600;
+ color: var(--text-muted);
+ letter-spacing: 0.05em;
+ }
+
+ .roadmap-item {
+ display: flex;
+ align-items: flex-start;
+ gap: 20px;
+ padding: 16px 24px;
+ background: var(--card-bg);
+ border: 1px solid var(--border);
+ border-radius: 12px;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+ }
+ .roadmap-num {
+ width: 40px;
+ height: 40px;
+ border-radius: 50%;
+ background: var(--blue);
+ color: var(--text);
+ font-weight: 700;
+ font-size: 0.9rem;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ flex-shrink: 0;
+ }
+
+ .tag {
+ display: inline-flex;
+ align-items: center;
+ gap: 6px;
+ padding: 6px 14px;
+ border-radius: 999px;
+ font-size: 0.8rem;
+ font-weight: 600;
+ font-family: 'Inter', sans-serif;
+ }
+ .tag-green { background: rgba(59,206,172,0.12); color: var(--success); }
+ .tag-orange { background: rgba(255,104,53,0.12); color: var(--orange); }
+ .tag-blue { background: rgba(107,143,212,0.12); color: #6b8fd4; }
+
+ .board-table {
+ width: 100%;
+ border-collapse: collapse;
+ font-family: 'Inter', sans-serif;
+ }
+ .board-table th {
+ text-align: left;
+ padding: 14px 16px;
+ font-size: 0.75rem;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.08em;
+ color: var(--text-muted);
+ border-bottom: 1px solid var(--border);
+ }
+ .board-table td {
+ padding: 16px;
+ font-size: 0.95rem;
+ color: var(--text-secondary);
+ border-bottom: 1px solid var(--border-light);
+ }
+ .board-table tbody tr {
+ transition: background 0.15s ease;
+ }
+ .board-table tbody tr:hover {
+ background: rgba(107, 143, 212, 0.06);
+ }
+ .board-table td strong {
+ color: var(--text);
+ font-weight: 600;
+ }
+
+ .board-split {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 32px;
+ }
+
+ @media (max-width: 1024px) {
+ 
+ h1 { font-size: 2.4rem; }
+ h2 {
+ font-size: 2.3rem;
+ font-weight: 700;
+ letter-spacing: -0.01em;
+ color: var(--text);
+ line-height: 1.25;
+ text-wrap: balance;
+ }
+ .grid-4 { grid-template-columns: repeat(2, 1fr); }
+ .grid-3 { grid-template-columns: repeat(2, 1fr); }
+ .board-split { grid-template-columns: 1fr; }
+ }
+
+ @media (max-width: 768px) {
+ 
+ h1 { font-size: 1.8rem; }
+ h2 {
+ font-size: 2.3rem;
+ font-weight: 700;
+ letter-spacing: -0.01em;
+ color: var(--text);
+ line-height: 1.25;
+ text-wrap: balance;
+ }
+ .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+ .nav-dots { display: none; }
+ }
+
+ .pdf-export-btn { position: fixed; top: 20px; right: 80px; z-index: 9999; display: flex; align-items: center; gap: 8px; padding: 10px 18px; background: rgba(10, 36, 99, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(107, 143, 212, 0.3); border-radius: 8px; color: #e8ecf5; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+ .pdf-export-btn:hover { background: rgba(255, 104, 53, 0.9); border-color: rgba(255, 104, 53, 0.5); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 104, 53, 0.25); }
+
+ .fullscreen-btn { position: fixed; top: 20px; right: 200px; z-index: 9999; display: flex; align-items: center; gap: 8px; padding: 10px 18px; background: rgba(10, 36, 99, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(107, 143, 212, 0.3); border-radius: 8px; color: #e8ecf5; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+ .fullscreen-btn:hover { background: rgba(255, 104, 53, 0.9); border-color: rgba(255, 104, 53, 0.5); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 104, 53, 0.25); }
+
+ /* Quando em tela cheia, esconder os botões para não atrapalhar o pitch */
+ :fullscreen .pdf-export-btn, :fullscreen .fullscreen-btn { opacity: 0; pointer-events: none; }
+ :-webkit-full-screen .pdf-export-btn, :-webkit-full-screen .fullscreen-btn { opacity: 0; pointer-events: none; }
+
+ @media print {
+ @page { size: landscape; margin: 0; }
+ 
+ /* Forçar impressão de cores e backgrounds em TODOS os elementos */
+ * { 
+ -webkit-print-color-adjust: exact !important; 
+ print-color-adjust: exact !important; 
+ color-adjust: exact !important;
+ }
+ 
+ /* Esconder UI */
+ .pdf-export-btn, .fullscreen-btn, .nav-dots, .slide-counter { display: none !important; }
+ 
+ /* Container principal */
+ body, html { 
+ height: auto !important; 
+ overflow: visible !important; 
+ background: #060e1f !important;
+ -webkit-print-color-adjust: exact !important;
+ }
+ 
+ .deck { 
+ height: auto !important; 
+ overflow: visible !important; 
+ display: block !important; 
+ background: #060e1f !important;
+ }
+ 
+ /* Cada slide = 1 página */
+ .slide {
+ position: relative !important;
+ visibility: visible !important;
+ opacity: 1 !important;
+ display: flex !important;
+ width: 100vw !important;
+ height: 100vh !important;
+ page-break-after: always !important;
+ page-break-inside: avoid !important;
+ break-after: page !important;
+ break-inside: avoid !important;
+ padding: 40px 60px !important;
+ background: #060e1f !important;
+ -webkit-print-color-adjust: exact !important;
+ print-color-adjust: exact !important;
+ }
+ 
+ .slide:last-child { 
+ page-break-after: auto !important; 
+ break-after: auto !important; 
+ }
+ 
+ /* Garantir que TODO o conteúdo dentro do slide seja visível */
+ .slide * { 
+ animation: none !important; 
+ opacity: 1 !important; 
+ transform: none !important; 
+ visibility: visible !important;
+ -webkit-print-color-adjust: exact !important;
+ print-color-adjust: exact !important;
+ }
+ 
+ /* Forçar backgrounds dos cards (glassmorphism precisa de fallback mas preservando estilo) */
+ .card, .metric-card {
+ background: #0f1829 !important; /* Cor exata sem rgba/blur para o PDF */
+ background-color: #0f1829 !important;
+ border: 1px solid rgba(107, 143, 212, 0.15) !important;
+ -webkit-print-color-adjust: exact !important;
+ print-color-adjust: exact !important;
+ }
+ 
+ /* Timeline lines and dots */
+ .roadmap-num, .roadmap-line {
+ background: rgba(107, 143, 212, 0.1) !important;
+ -webkit-print-color-adjust: exact !important;
+ print-color-adjust: exact !important;
+ }
+ 
+ .roadmap-line {
+ border-left: 2px dashed rgba(107, 143, 212, 0.2) !important;
+ }
+ 
+ .card-icon {
+ background: rgba(107, 143, 212, 0.1) !important;
+ -webkit-print-color-adjust: exact !important;
+ print-color-adjust: exact !important;
+ }
+ 
+ /* Garantir que tabelas sejam visíveis */
+ table, thead, tbody, tr, th, td {
+ -webkit-print-color-adjust: exact !important;
+ print-color-adjust: exact !important;
+ background-color: transparent !important;
+ }
+ 
+ /* SVGs e logos */
+ svg {
+ display: inline-block !important;
+ visibility: visible !important;
+ }
+ 
+ /* Forçar cores de texto */
+ h1, h2, h3, h4, p, span, div, li {
+ color: inherit !important;
+ -webkit-print-color-adjust: exact !important;
+ }
+ }
+</style>
+</head>
+<body>
+
+ <button onclick="window.print()" class="pdf-export-btn" title="Exportar PDF">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+ <span>PDF</span>
+ </button>
+
+ <button id="fullscreen-btn" class="fullscreen-btn" title="Modo Apresentação (F11)">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+ </svg>
+ <span>Tela Cheia</span>
+ </button>
+
+<div class="deck">
+
+ <!-- SLIDE 1: CAPA -->
+ <div class="slide active" data-index="0">
+ <div class="flex flex-col items-center justify-center text-center w-full">
+ <div class="stagger-1">
+ <svg class="logo-wolfex" viewBox="0 0 681 258" fill="none" xmlns="http://www.w3.org/2000/svg">
+ <g>
+ <path fill="#fff" d="M159.2,85.51c2.72.81-.49,8.57-1.14,10.91-6.54,23.33-15.37,49.13-23.39,72.11-.84,2.4-5.02,14.62-5.97,15.35-.81.78-1.8.75-2.82.88-4.51.61-18.71.57-23.27,0-1.02-.13-2.06.06-2.74-.96l-18.52-60.28-18.51,61.25c-7.97-.82-17.35.88-25.12,0-1.33-.15-2.44-.09-3.11-1.52L3.38,87.36c1.6-2.6,17.84-2.22,21.42-1.89,2.12.19,3.95.17,5.49,1.93l19.49,63.95,18.52-64.01c2.12-2.11,23.08-2.61,25.9-.81l20.94,65.74,17.88-65.58c.87-.13,2.46-1.18,2.99-1.18,4.77,0,19.95-.96,23.18,0Z"/>
+ <path fill="#fff" d="M201.39,161.07c.04-.36,1.31-1.21.92-2.31-4.42-.89-16.84,17.51-19.46,14.83-.46-14.71,4.61-30.89,15.75-40.79l-6.48,22.25c7.65-3.06,14.66-8.74,23.17-9.26-6.13,10.83-7.81,30.2.92,39.86.29-8.74,3.27-16.61,7.44-24.1l1.84.46c.6,2.24-1.89,6.77.91,7.87.77-10.82,9.88-19.79,19.5-23.62,2.57-1.02,6.56-1.03,8.69-2.43,2.49-1.64,4.25-5.91,1.98-8.28-3.88-4.03-4.37-.08-4.82.03-2.24.57-11.51-1.41-11.47-4.15.52-2.7,11.39-16.34,13.94-13.48v2.79c3.27-1.74,1.6-7.57,1.71-10.98l-8.78-4.56c-3.2-.36-10.26,5.08-13.84,5.31s-8.31-3.64-11.74-3.5c-5.55,2.98-45.26,13.51-46.68,15.52-3.19,4.52,11.72,8.57,14.44,9.83,1.39.64,2.29-.13,1.84,2.28-3.83.71-8.56-2.2-12.06-.46-.93.46-10.69,12.3-12.59,14.29-.74.78-1.29,2.23-2.68,1.94-6.13-14.78.1-34.76,9.74-46.8,34.29-42.81,106.35-12.74,97.1,43.32-4.64,28.11-33.59,49.62-62.17,44.05-3.62-.71-7.13-11.94-7.13-15.07,0-4.58-.51-10.49,0-14.83Z"/>
+ <path fill="#fff" d="M443.38,86.43c1.01,6.69,1.35,13.45-.87,20l-47.35,1.33v19.47l43.58.93v20.4l-43.58.92-.92,35.24h-25.03l-.93-98.28h75.1Z"/>
+ <path fill="#fff" d="M311.72,162.46h41.26c.48,0,2.1,1.13,3.1,1.07.96,6.96,2,14.93-1.25,21.18h-69.07l-.93-98.29c8.97.69,18.74-2.66,26.89,1.4v74.64Z"/>
+ <path fill="#fff" d="M195.82,121.67c.6,2.17-.56,1.56-1.18,2.12-5.5,4.86-7.7,6.5-13.64.19l14.82-2.31Z"/>
+ <path fill="#fff" d="M229.21,115.17l-12.05.93c.64-5.05,9.95-4.97,12.05-.93Z"/>
+ </g>
+ <g>
+ <path fill="#FF6835" d="M490.08 105.5 L490.06 125.48 L530.02 125.48 L530.01 144.21 L490.06 144.21 L490.06 165.44 L515.53 165.44 L538.76 165.44 L538.75 185.41 L463.87 185.41 L463.87 85.53 L536.27 85.51 L536.25 105.5 L490.08 105.5Z"/>
+ </g>
+ <g>
+ <path fill="#FF6835" d="M586.03 127.62 L532.58 208.76 L620.77 132.51 L583.55 85.43 L551.33 85.43 L586.03 127.62Z"/>
+ <path fill="#FF6835" d="M612.88 105.2 L629.34 124.04 L675.13 59.41 L612.88 105.2Z"/>
+ <path fill="#FF6835" d="M609.24 158.48 L627.55 184.6 L660.2 184.6 L627.81 142.34 L609.24 158.48Z"/>
+ </g>
+ </svg>
+ </div>
+ <div class="stagger-2 mt-8">
+ <p class="label">Apresentação ao Board</p>
+ </div>
+ <div class="stagger-3 mt-4 max-w-3xl mx-auto">
+ <h1 style="font-size: 3.4rem;">A inteligência que faltava para a logística</h1>
+ </div>
+ <div class="stagger-4 mt-6 max-w-2xl mx-auto">
+ <p style="font-size: 1.15rem;">Status da operação, direção estratégica e alinhamento para os próximos 3 meses.</p>
+ </div>
+ <div class="stagger-5 mt-8">
+ <div class="accent-line mx-auto"></div>
+ </div>
+ <div class="stagger-6 mt-8">
+ <p style="font-size: 0.85rem; color: var(--text-muted);">Wolfex | Abril 2026 | Confidencial</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- SLIDE 2: O QUE E A WOLFEX -->
+ <div class="slide" data-index="1">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">01 — O que e a Wolfex</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>A definição em uma frase.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p style="font-size: 1.25rem; color: var(--text); font-weight: 600; line-height: 1.5; max-w-4xl;">"A Wolfex e o TMS mais completo do mercado para logística rodoviária. Nao competimos com ERPs — integramos aos maiores do mercado. Nosso foco e ser a plataforma de gestão de transportes mais profunda e conectada do Brasil."</p>
+ </div>
+ <div class="stagger-4 mt-8 grid grid-3 gap-grid">
+ <div class="card">
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7z"/><path d="M5 16v3"/><path d="M12 16v3"/></svg>
+ </div>
+ <h3 class="mb-2">Categoria</h3>
+ <p style="font-size: 0.9rem;">SaaS B2B especializado em TMS (Transportation Management System) com integração nativa aos principais ERPs do mercado.</p>
+ </div>
+ <div class="card">
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ </div>
+ <h3 class="mb-2">Problema Principal</h3>
+ <p style="font-size: 0.9rem;">Fragmentacao operacional: falta de visibilidade em tempo real, processos manuais e custos invisíveis que drenam margem.</p>
+ </div>
+ <div class="card">
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"/><path d="M12 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>
+ </div>
+ <h3 class="mb-2">Quem Atendemos</h3>
+ <p style="font-size: 0.9rem;">Embarcadores e transportadoras com 50+ veículos, operando com baixa maturidade digital no controle da cadeia de suprimentos.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- SLIDE 3: PROBLEMA E MERCADO -->
+ <div class="slide" data-index="2">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">02 — Problema e Mercado</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>Uma dor real, um mercado em expansão.</h2>
+ </div>
+ <div class="stagger-3 mt-4">
+ <p class="max-w-3xl">A logística tradicional fragmentada esta drenando lucros. A baixa digitalização da cadeia de suprimentos gera ineficiência sistêmica que se acentua com o crescimento da operação.</p>
+ </div>
+ <div class="stagger-4 mt-4 grid grid-2 gap-grid">
+ <div class="flex flex-col gap-3">
+ <div class="card" style="padding: 20px 24px;">
+ <h3 style="color: var(--orange); font-size: 1.3rem; margin-bottom: 8px;">Dor Real do Cliente</h3>
+ <div class="mt-4 flex flex-col gap-3">
+ <div class="flex gap-3 items-start">
+ <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6835" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ <p style="font-size: 0.9rem; line-height: 1.45;"><strong style="color: var(--text);">Atrasos recorrentes:</strong> Sem visibilidade em tempo real, a operação reage em vez de prever.</p>
+ </div>
+ <div class="flex gap-3 items-start">
+ <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6835" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ <p style="font-size: 0.9rem; line-height: 1.45;"><strong style="color: var(--text);">Processos manuais:</strong> Planilhas, e-mails e ligacoes geram erros operacionais e retrabalho constante.</p>
+ </div>
+ <div class="flex gap-3 items-start">
+ <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6835" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ <p style="font-size: 0.9rem; line-height: 1.45;"><strong style="color: var(--text);">Custos invisíveis:</strong> Diarias, estadias e fretes duplicados consomem margem sem controle centralizado.</p>
+ </div>
+ <div class="flex gap-3 items-start">
+ <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6835" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ <p style="font-size: 0.9rem; line-height: 1.45;"><strong style="color: var(--text);">Falta de visibilidade:</strong> O cliente final pergunta "onde esta a carga?" e a operação nao responde em tempo real.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="flex flex-col gap-3">
+ <div class="metric-card" style="text-align: left; padding: 20px 24px;">
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">TAM — Mercado Total BR</p>
+ <p class="metric-value" style="font-size: 2.2rem; margin-top: 8px;">R$ 1,1 trilhão</p>
+                            <p class="metric-source" style="font-size: 0.75rem; opacity: 0.6; margin-top: 4px; font-weight: 400; letter-spacing: 0;">Fonte: ILOS / FDC (2023)</p>
+ <p style="font-size: 0.85rem; margin-top: 8px;">Mercado logístico brasileiro estimado. O transporte rodoviário representa mais de 60% desse volume.</p>
+ </div>
+ <div class="metric-card" style="text-align: left; padding: 20px 24px;">
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">SAM — Mercado Acessível</p>
+ <p class="metric-value" style="font-size: 2.2rem; margin-top: 8px;">R$ 45 bilhões</p>
+                            <p class="metric-source" style="font-size: 0.75rem; opacity: 0.6; margin-top: 4px; font-weight: 400; letter-spacing: 0;">Fonte: CNT / ANTT</p>
+ <p style="font-size: 0.85rem; margin-top: 8px;">Segmento de gestão e tecnologia aplicada ao transporte rodoviário para empresas de médio porte.</p>
+ </div>
+ <div class="metric-card" style="text-align: left; padding: 20px 24px;">
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Tendência</p>
+ <p style="font-size: 1.1rem; font-weight: 700; color: var(--text); margin-top: 8px;">Pressão tripla: digitalização, LGPD e ESG</p>
+ <p style="font-size: 0.85rem; margin-top: 8px;">60% das transportadoras médias ainda operam com planilhas. A pressão regulatória e competitiva torna a digitalização inevitável nos próximos 24 meses.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- SLIDE 4: PROPOSTA DE VALOR -->
+ <div class="slide" data-index="3">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">03 — Proposta de Valor</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>Por que a Wolfex existe?</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">A proposta da Wolfex e substituir planilhas e sistemas legados por uma plataforma única, moderna e desenhada para crescimento. Nao vendemos software. Entregamos eficiência exponencial.</p>
+ </div>
+ <div class="stagger-4 mt-8">
+ <table class="board-table">
+ <thead>
+ <tr>
+ <th>Alternativa Atual</th>
+ <th>Por que Falha</th>
+ <th>O que a Wolfex Entrega</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td><strong>Planilhas e e-mails</strong></td>
+ <td>Erros humanos, sem rastreabilidade, colaboracao ineficiente</td>
+ <td>Plataforma centralizada com dados em tempo real e auditoria completa</td>
+ </tr>
+ <tr>
+ <td><strong>TMS legados</strong></td>
+ <td>Interface defasada, custo elevado, difícil integração com ERPs modernos</td>
+ <td>Stack moderno (React 19 + NestJS), API aberta, setup em semanas</td>
+ </tr>
+ <tr>
+ <td><strong>ERP generico</strong></td>
+ <td>Logística como módulo secundario, sem inteligência operacional dedicada</td>
+ <td>TMS nativo com profundidade operacional. ERP conectado, nao substituído.</td>
+ </tr>
+ <tr>
+ <td><strong>TMS sem financeiro nativo</strong></td>
+ <td>Gargalo critico na implementação: financeiro fica desconectado do processo de viagens</td>
+ <td>Financeiro como continuacao natural da gestão de viagens. Dados fluem sem quebra.</td>
+ </tr>
+ <tr>
+ <td><strong>Varios sistemas isolados</strong></td>
+ <td>Fragmentacao de dados, retrabalho, visibilidade parcial</td>
+ <td>Ecosistema unico: viagens, documentos fiscais, financeiro e analytics</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ <div class="stagger-5 mt-8 text-center">
+ <p style="font-size: 1.3rem; font-weight: 700; color: var(--orange);">Validação operacional em andamento com design partner Braslog.</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- SLIDE 5: PRODUTO E OFERTA -->
+ <div class="slide" data-index="4">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">04 — Produto e Oferta</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>O que existe hoje. O que vem a seguir.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">A Wolfex opera como <strong style="color: var(--text);">TMS B2B</strong> especializado em logística rodoviária, disponibilizado via web, com modelo de assinatura escalonado por volume de cargas e número de usuarios. Integração nativa aos maiores ERPs: SAP, Totvs, Oracle, Linx, Microsoft Dynamics, Salesforce.</p>
+ </div>
+ <div class="stagger-4 mt-8 grid grid-3 gap-grid">
+ <div class="card">
+ <div class="flex items-center gap-2 mb-3">
+ <span class="tag tag-green">Já disponível</span>
+ </div>
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 6-6"/></svg>
+ </div>
+ <h3 class="mb-2">Dashboard Logistico</h3>
+ <p style="font-size: 0.85rem;">KPIs em tempo real, gráficos comparativos (Real vs Orçado) e velocimetros por categoria.</p>
+ </div>
+ <div class="card">
+ <div class="flex items-center gap-2 mb-3">
+ <span class="tag tag-green">Já disponível</span>
+ </div>
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7z"/></svg>
+ </div>
+ <h3 class="mb-2">Gestao de Viagens</h3>
+ <p style="font-size: 0.85rem;">Cadastro completo, timeline operacional, controle de emissao, baixa e pontualidade. Visualização por CTe ou Manifesto.</p>
+ </div>
+ <div class="card">
+ <div class="flex items-center gap-2 mb-3">
+ <span class="tag tag-green">Já disponível</span>
+ </div>
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+ </div>
+ <h3 class="mb-2">Documentos Fiscais</h3>
+ <p style="font-size: 0.85rem;">Emissao de CT-e via Nuvem Fiscal, gestão de NF-e e MDF-e, importacao de XML e registro de ocorrencias.</p>
+ </div>
+ <div class="card">
+ <div class="flex items-center gap-2 mb-3">
+ <span class="tag tag-green">Já disponível</span>
+ </div>
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"/><path d="M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+ </div>
+ <h3 class="mb-2">Base Operacional</h3>
+ <p style="font-size: 0.85rem;">Cadastro de clientes, veículos, motoristas e rotas. Base completa para operação diaria.</p>
+ </div>
+ <div class="card">
+ <div class="flex items-center gap-2 mb-3">
+ <span class="tag tag-blue">Em discovery</span>
+ </div>
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+ </div>
+ <h3 class="mb-2">Financeiro Nativo</h3>
+ <p style="font-size: 0.85rem;">O financeiro na logística nao existe por si so — e a continuacao da gestão de viagens. Modulo em discovery para eliminar o gargalo de TMS sem controle financeiro integrado.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- SLIDE 6: STATUS ATUAL -->
+ <div class="slide" data-index="5">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">05 — Status Atual</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>Em operação. Validada em parceria estratégica.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">A plataforma esta em produção, rodando dentro do nosso design partner. O problema foi validado, a solução foi construida e os resultados sao mensuraveis.</p>
+ </div>
+ <div class="stagger-4 mt-8 grid grid-2 gap-grid">
+ <div class="card">
+ <h3 style="color: var(--orange);">Fase Atual</h3>
+ <div class="mt-4 flex flex-col gap-4">
+ <div>
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Estágio</p>
+ <p style="font-size: 1.3rem; font-weight: 700; color: var(--text); margin-top: 4px;">Design Partnership</p>
+ <p style="font-size: 0.85rem; margin-top: 4px;">Plataforma consolidada, em operação com Braslog como parceira de design. Validação continua em ambiente real de alta complexidade.</p>
+ </div>
+ <div>
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Stack Tecnológico</p>
+ <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 4px;">React 19 + Vite (frontend) | NestJS 11 + Prisma 6 + TypeScript (backend) | PostgreSQL + Redis | Docker + Nginx</p>
+ </div>
+ <div>
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Propriedade</p>
+ <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 4px;">Projeto privado da MH Gestao Empresarial</p>
+ </div>
+ </div>
+ </div>
+ <div class="card">
+ <h3 style="color: var(--orange);">O que já foi validado</h3>
+ <div class="mt-4 flex flex-col gap-3">
+ <div class="flex gap-3 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3BCEAC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+ <div>
+ <p style="font-size: 0.9rem; font-weight: 600; color: var(--text);">Problema validado</p>
+ <p style="font-size: 0.85rem;">Apos analise de mercado, descartamos a visao de ERP — oceano vermelho. O caminho e ser o TMS mais profundo do mercado, integrado aos ERPs já instalados.</p>
+ </div>
+ </div>
+ <div class="flex gap-3 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3BCEAC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+ <div>
+ <p style="font-size: 0.9rem; font-weight: 600; color: var(--text);">Solução validada</p>
+ <p style="font-size: 0.85rem;">Plataforma em produção com Braslog como design partner, operando diariamente com alta complexidade.</p>
+ </div>
+ </div>
+ <div class="flex gap-3 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3BCEAC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+ <div>
+ <p style="font-size: 0.9rem; font-weight: 600; color: var(--text);">Interesse do mercado</p>
+ <p style="font-size: 0.85rem;">Validação operacional em andamento com Braslog. Impacto quantitativo em consolidação apos fechamento do ciclo de desenvolvimento.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="stagger-5 mt-6 client-row">
+ <span class="client-name">Design Partner: Braslog</span>
+ </div>
+ </div>
+ </div>
+
+ <!-- SLIDE 7: ROADMAP -->
+ <div class="slide" data-index="6">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">06 — Roadmap (Próximos 3 Meses / Q3)</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>Para onde a empresa esta indo.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">O roadmap de desenvolvimento foca em concluir os tres pilares do produto — TMS, KPI e Financeiro — para validação total dentro do design partner antes de qualquer iniciativa de GTM.</p>
+ </div>
+ <div class="stagger-4 mt-8 flex flex-col gap-4">
+ <div class="roadmap-item">
+ <div class="roadmap-num" style="background: var(--success);">OK</div>
+ <div class="w-full">
+ <div class="flex items-center justify-between">
+ <h3>Gerenciamento de Viagem</h3>
+ <span class="tag tag-green">Concluído</span>
+ </div>
+ <p class="mt-2" style="font-size: 0.9rem;">02/11/2025 — 30/04/2026. Base operacional completa: cadastro de viagens, veiculos, motoristas, rotas, emissao de CT-e e timeline operacional.</p>
+ <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+ </div>
+ </div>
+ <div class="roadmap-item">
+ <div class="roadmap-num" style="background: var(--orange);">2</div>
+ <div class="w-full">
+ <div class="flex items-center justify-between">
+ <h3>KPI de Gerenciamento de Viagem</h3>
+ <span class="tag tag-orange">Em andamento</span>
+ </div>
+ <p class="mt-2" style="font-size: 0.9rem;">04/05/2026 — 30/06/2026. Dashboard logistico com KPIs em tempo real, gráficos comparativos (Real vs Orcado) e velocimetros por categoria.</p>
+ <div class="progress-bar"><div class="progress-fill" style="width: 70%;"></div></div>
+ </div>
+ </div>
+ <div class="roadmap-item">
+ <div class="roadmap-num" style="background: var(--blue);">3</div>
+ <div class="w-full">
+ <div class="flex items-center justify-between">
+ <h3>Modulo Financeiro Nativo</h3>
+ <span class="tag tag-blue">Em discovery</span>
+ </div>
+ <p class="mt-2" style="font-size: 0.9rem;">27/04/2026 — 31/07/2026. O financeiro na logística nao existe por si so: e a continuacao da gestao de viagens. Contas a pagar/receber, faturamento e rentabilidade por viagem integrados ao TMS.</p>
+ <div class="progress-bar"><div class="progress-fill" style="width: 40%;"></div></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- SLIDE 8: ICP -->
+ <div class="slide" data-index="7">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">07 — ICP (Cliente Ideal)</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>Quem compra, quem usa e quem mais aproveita.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">O ICP foi definido a partir do padrão observado nos power users atuais: clientes que demonstram alta adesao, menor churn e expansão espontanea de uso.</p>
+ </div>
+ <div class="stagger-4 mt-8 grid grid-2 gap-grid">
+ <div class="card" style="padding: 20px;">
+ <h3 style="color: var(--orange);">ICP Principal — "O Embarcador em Crescimento"</h3>
+ <div class="mt-4 flex flex-col gap-2">
+ <div>
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Quem compra</p>
+ <p style="font-size: 0.95rem; color: var(--text); margin-top: 4px;">Diretores de Operacoes, Supply Chain e CFOs.</p>
+ </div>
+ <div>
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Quem usa</p>
+ <p style="font-size: 0.95rem; color: var(--text); margin-top: 4px;">Operadores logisticos, analistas de frota e, em breve, motoristas (via app).</p>
+ </div>
+ <div>
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Perfil da empresa</p>
+ <p style="font-size: 0.95rem; color: var(--text); margin-top: 4px;">Embarcadores e transportadoras com <strong>50+ veículos</strong>, faturamento entre R$ 10M e R$ 200M/ano.</p>
+ </div>
+ <div>
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Maturidade digital</p>
+ <p style="font-size: 0.95rem; color: var(--text); margin-top: 4px;">Baixa a media: opera com planilhas, e-mails ou TMS legados. Ja sente a dor da fragmentacao.</p>
+ </div>
+ <div>
+ <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Ticket médio</p>
+ <p style="font-size: 0.95rem; color: var(--text); margin-top: 4px;">R$ 5.000 a R$ 25.000/mes, baseado em volume de cargas e módulos contratados.</p>
+ </div>
+ </div>
+ </div>
+ <div class="card" style="padding: 20px;">
+ <h3 style="color: var(--orange);">Sinais de Qualificação</h3>
+ <div class="mt-4 flex flex-col gap-2">
+ <div class="flex gap-2 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3BCEAC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+ <p style="font-size: 0.9rem;"><strong style="color: var(--text);">Qualificador:</strong> Empresa com 50+ veículos ou 100+ cargas/mes</p>
+ </div>
+ <div class="flex gap-2 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3BCEAC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+ <p style="font-size: 0.9rem;"><strong style="color: var(--text);">Qualificador:</strong> Foco em operações fracionadas, mercado de frios e congelados</p>
+ </div>
+ <div class="flex gap-2 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3BCEAC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+ <p style="font-size: 0.9rem;"><strong style="color: var(--text);">Qualificador:</strong> Busca integração com ERPs ou opera com TMS legado defasado</p>
+ </div>
+ <div class="flex gap-2 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+ <p style="font-size: 0.9rem;"><strong style="color: var(--text);">Desqualificador:</strong> Operações 100% informais sem maturidade para adoção tecnológica</p>
+ </div>
+ <div class="flex gap-2 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+ <p style="font-size: 0.9rem;"><strong style="color: var(--text);">Desqualificador:</strong> Empresas que já possuem TMS moderno e estão satisfeitas</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- SLIDE 9: MODELO DE RECEITA -->
+ <div class="slide" data-index="8">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">08 — Modelo de Receita</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>Como a empresa gera receita.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">A monetizacao e hibrida, combinando receita recorrente previsível com servicos de implementação e customizacao. Modelo projetado para reduzir o risco de dependencia exclusiva de novas vendas.</p>
+ </div>
+ <div class="stagger-4 mt-8 grid grid-3 gap-grid">
+ <div class="card">
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ </div>
+ <h3 class="mb-2">SaaS Recorrente</h3>
+ <p style="font-size: 0.9rem;">Assinatura mensal por licenca, escalonada por volume de cargas e numero de usuarios. Base previsível de receita recorrente.</p>
+ </div>
+ <div class="card">
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+ </div>
+ <h3 class="mb-2">Taxa de Implementação</h3>
+ <p style="font-size: 0.9rem;">Setup inicial, migracao de dados, configuracao de regras de negocio e treinamento da equipe do cliente.</p>
+ </div>
+ <div class="card">
+ <div class="card-icon">
+ <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 6v6l4 2"/></svg>
+ </div>
+ <h3 class="mb-2">Servicos Customizados</h3>
+ <p style="font-size: 0.9rem;">Integracoes sob demanda, consultoria de otimização logística e suporte dedicado enterprise.</p>
+ </div>
+ </div>
+ <div class="stagger-5 mt-8">
+ <div class="card" style="max-width: 700px;">
+ <h3 style="color: var(--orange);">Estrutura de Precos (Estimada)</h3>
+ <div class="mt-4">
+ <table class="board-table">
+ <thead>
+ <tr>
+ <th>Componente</th>
+ <th>Valor Estimado</th>
+ <th>Recorrencia</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td><strong>Assinatura base</strong></td>
+ <td>R$ 5.000 — R$ 25.000/mes</td>
+ <td>Mensal (12x)</td>
+ </tr>
+ <tr>
+ <td><strong>Setup inicial</strong></td>
+ <td>R$ 15.000 — R$ 50.000</td>
+ <td>Projeto unico</td>
+ </tr>
+ <tr>
+ <td><strong>Integracoes customizadas</strong></td>
+ <td>R$ 10.000 — R$ 40.000</td>
+ <td>Por projeto</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ <p class="mt-4" style="font-size: 0.85rem; color: var(--text-muted);">Valores baseados no ticket médio observado nos clientes atuais. Ajustes podem ocorrer conforme evolucao da estratégia de preços.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- SLIDE 10: DADOS DA OPERAÇÃO -->
+ <div class="slide" data-index="9">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">09 — Dados da Operação Atual</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>O que ja construimos.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">Os numeros a seguir refletem o estado atual da operação. O produto ainda nao gera receita; o foco e validação tecnica e operacional junto ao design partner.</p>
+ </div>
+ <div class="stagger-4 mt-8 grid grid-4 gap-grid">
+ <div class="metric-card">
+ <div class="metric-value">1</div>
+ <div class="metric-label">Design Partner ativo</div>
+ </div>
+ <div class="metric-card">
+ <div class="metric-value">4</div>
+ <div class="metric-label">Modulos operacionais no ar</div>
+ </div>
+ <div class="metric-card">
+ <div class="metric-value">1</div>
+ <div class="metric-label">Módulo Financeiro em discovery</div>
+ </div>
+ <div class="metric-card">
+ <div class="metric-value">35+</div>
+ <div class="metric-label">Modulos no backend NestJS</div>
+ </div>
+ </div>
+
+ </div>
+ </div>
+ <!-- SLIDE 11: METAS -->
+ <div class="slide" data-index="10">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">10 — Metas (Próximos 3 Meses / Q3)</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>Onde queremos chegar.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">O foco do Q3 e deixar o produto maduro e validado dentro do design partner. Nenhuma iniciativa de GTM sera executada antes da conclusao deste ciclo.</p>
+ </div>
+ <div class="stagger-4 mt-8 grid grid-3 gap-grid">
+ <div class="card flex gap-4 items-start">
+ <div class="roadmap-num">01</div>
+ <div>
+ <p style="font-size: 1.1rem; font-weight: 700; color: var(--text);">Concluir KPI de Gerenciamento de Viagem</p>
+ <p style="font-size: 0.9rem; margin-top: 4px;">Dashboard logistico completo com KPIs em tempo real e comparativos Real vs Orcado. Prazo: 30/06/2026.</p>
+ </div>
+ </div>
+ <div class="card flex gap-4 items-start">
+ <div class="roadmap-num">02</div>
+ <div>
+ <p style="font-size: 1.1rem; font-weight: 700; color: var(--text);">Concluir Modulo Financeiro Nativo integrado ao TMS</p>
+ <p style="font-size: 0.9rem; margin-top: 4px;">Contas a pagar/receber, faturamento e rentabilidade por viagem como continuacao natural da gestao de transportes. Prazo: 31/07/2026.</p>
+ </div>
+ </div>
+ <div class="card flex gap-4 items-start">
+ <div class="roadmap-num">03</div>
+ <div>
+ <p style="font-size: 1.1rem; font-weight: 700; color: var(--text);">Validar 100% a integração TMS + KPI + Financeiro</p>
+ <p style="font-size: 0.9rem; margin-top: 4px;">Testar e validar o ecossistema completo dentro do design partner Braslog antes de qualquer movimentacao de mercado.</p>
+ </div>
+ </div>
+ <div class="card flex gap-4 items-start">
+ <div class="roadmap-num">04</div>
+ <div>
+ <p style="font-size: 1.1rem; font-weight: 700; color: var(--text);">Documentar processo e regras de negocio</p>
+ <p style="font-size: 0.9rem; margin-top: 4px;">Criar documentação tecnica e operacional para replicacao eficiente em futuros clientes.</p>
+ </div>
+ </div>
+ <div class="card flex gap-4 items-start">
+ <div class="roadmap-num">05</div>
+ <div>
+ <p style="font-size: 1.1rem; font-weight: 700; color: var(--text);">Produto maduro e pronto para decisao de GTM</p>
+ <p style="font-size: 0.9rem; margin-top: 4px;">Base solida para que o Board defina se inicia movimentacao de mercado no proximo ciclo ou aguarda mais validação.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- SLIDE 12: PRÓXIMOS PASSOS E DECISÕES -->
+ <div class="slide" data-index="11">
+ <div class="max-w-5xl mx-auto w-full">
+ <div class="stagger-1">
+ <p class="label">11 — Próximos Passos e Decisoes do Board</p>
+ </div>
+ <div class="stagger-2 mt-4">
+ <h2>O que precisa ser decidido.</h2>
+ </div>
+ <div class="stagger-3 mt-6">
+ <p class="max-w-3xl">Esta apresentação tem como objetivo alinhar o Board sobre a direcao de produto e a estratégia pos-Q3. As decisoes a seguir definirao se avancamos para GTM imediato ou consolidamos mais validação antes de movimentar o mercado.</p>
+ </div>
+ <div class="stagger-4 mt-8 grid grid-2 gap-grid">
+ <div class="card">
+ <h3 style="color: var(--orange);">Decisoes Estrategicas</h3>
+ <div class="mt-4 flex flex-col gap-4">
+ <div class="flex gap-3 items-start">
+ <div class="roadmap-num">1</div>
+ <div>
+ <p style="font-size: 0.95rem; font-weight: 600; color: var(--text);">Estrategia de GTM: agora ou depois?</p>
+ <p style="font-size: 0.85rem;">Definir se iniciamos movimentacao de mercado (prospeccao, pitch, pipeline) ja no Q3, antes da conclusao do Modulo Financeiro 100% integrado ao TMS, ou aguardamos a integracao completa para entao executar o go-to-market.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="card">
+ <h3 style="color: var(--orange);">Próximos Passos Imediatos</h3>
+ <div class="mt-4 flex flex-col gap-4">
+ <div class="flex gap-3 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b8fd4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ <div>
+ <p style="font-size: 0.95rem; font-weight: 600; color: var(--text);">Consolidação da validação operacional</p>
+ <p style="font-size: 0.85rem;">Fechar o ciclo de testes com Braslog (TMS + KPI + Financeiro) e consolidar os indicadores de eficiencia antes de qualquer iniciativa externa.</p>
+ </div>
+ </div>
+ <div class="flex gap-3 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b8fd4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ <div>
+ <p style="font-size: 0.95rem; font-weight: 600; color: var(--text);">Discovery e desenvolvimento do financeiro</p>
+ <p style="font-size: 0.85rem;">Mapear o processo completo de contas a pagar/receber e rentabilidade por viagem junto a Braslog, integrando ao TMS ja em operação.</p>
+ </div>
+ </div>
+ <div class="flex gap-3 items-start">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b8fd4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ <div>
+ <p style="font-size: 0.95rem; font-weight: 600; color: var(--text);">Definição da estratégia de precos</p>
+ <p style="font-size: 0.85rem;">Ajustar o modelo de receita, estrutura de pacotes e política de descontos para enterprise, alinhado a decisao de GTM do Board.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="stagger-5 mt-8 text-center">
+ <p style="font-size: 1.1rem; color: var(--text-muted);">Wolfex | wolfex.com.br | contato@wolfex.com.br</p>
+ <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">Documento confidencial. Uso exclusivo do Board.</p>
+ </div>
+ </div>
+ </div>
+
+</div>
+
+<!-- Nav Dots -->
+<div class="nav-dots"></div>
+
+<!-- Slide Counter -->
+<div class="slide-counter"><span id="current">1</span> / <span id="total">12</span></div>
+
+<script>
+(function() {
+ const slides = document.querySelectorAll('.slide');
+ const total = slides.length;
+ let currentSlide = 0;
+ let isAnimating = false;
+ const navDotsContainer = document.querySelector('.nav-dots');
+ const currentEl = document.getElementById('current');
+ const totalEl = document.getElementById('total');
+ totalEl.textContent = total;
+
+ slides.forEach((_, i) => {
+ const dot = document.createElement('button');
+ dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+ dot.addEventListener('click', () => goToSlide(i));
+ navDotsContainer.appendChild(dot);
+ });
+
+ const dots = document.querySelectorAll('.nav-dot');
+
+ function updateNav() {
+ dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+ currentEl.textContent = currentSlide + 1;
+ }
+
+ function resetStaggers(slide) {
+ const staggers = slide.querySelectorAll('[class*="stagger-"]');
+ staggers.forEach(el => {
+ el.style.animation = 'none';
+ el.offsetHeight;
+ el.style.animation = null;
+ });
+ }
+
+ function goToSlide(index) {
+ if (isAnimating || index === currentSlide || index < 0 || index >= total) return;
+ isAnimating = true;
+ slides[currentSlide].classList.remove('active');
+ currentSlide = index;
+ slides[currentSlide].classList.add('active');
+ resetStaggers(slides[currentSlide]);
+ updateNav();
+ setTimeout(() => { isAnimating = false; }, 800);
+ }
+
+ window.addEventListener('wheel', (e) => {
+ e.preventDefault();
+ if (isAnimating) return;
+ if (Math.abs(e.deltaY) > 20) {
+ if (e.deltaY > 0) goToSlide(currentSlide + 1);
+ else goToSlide(currentSlide - 1);
+ }
+ }, { passive: false });
+
+ window.addEventListener('keydown', (e) => {
+ if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+ e.preventDefault();
+ goToSlide(currentSlide + 1);
+ } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+ e.preventDefault();
+ goToSlide(currentSlide - 1);
+ }
+ });
+
+ // Lógica do botão de Tela Cheia
+ document.getElementById('fullscreen-btn').addEventListener('click', () => {
+ if (!document.fullscreenElement) {
+ document.documentElement.requestFullscreen().catch(err => {
+ console.log(`Erro ao tentar entrar em tela cheia: ${err.message} (${err.name})`);
+ });
+ } else {
+ if (document.exitFullscreen) {
+ document.exitFullscreen();
+ }
+ }
+ });
+
+ let touchStartY = 0;
+ window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+ window.addEventListener('touchend', (e) => {
+ const diff = touchStartY - e.changedTouches[0].clientY;
+ if (Math.abs(diff) > 50) {
+ if (diff > 0) goToSlide(currentSlide + 1);
+ else goToSlide(currentSlide - 1);
+ }
+ }, { passive: true });
+})();
+</script>
+
+</body>
+</html>
