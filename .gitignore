@@ -1,0 +1,11 @@
+# Scripts de coleta de dados (ClickUp + gh) e artefatos gerados.
+# Nao devem ser commitados: contem tokens e dados intermediarios.
+scripts/
+
+# Node
+node_modules/
+package-lock.json
+
+# Sistema
+.DS_Store
+Thumbs.db
